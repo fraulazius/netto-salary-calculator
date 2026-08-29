@@ -1,9 +1,9 @@
 :root {
-  --background: #f5f4eb;
+  --background: #f4f2ec;
   --surface: #ffffff;
   --text: #181919;
   --muted-text: #666863;
-  --accent: #c4ec61;
+  --accent: #c8f55a;
   --border: #d7d5ce;
   --soft: #ece9e1;
 }
@@ -285,6 +285,64 @@ button:active {
   text-align: right;
 }
 
+.tooltip-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.tooltip {
+  position: relative;
+
+  width: 18px;
+  height: 18px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--border);
+  border-radius: 50%;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: help;
+}
+
+.tooltip-text {
+  position: absolute;
+
+  left: 50%;
+  bottom: calc(100% + 10px);
+
+  width: 270px;
+  padding: 10px 12px;
+
+  background: var(--text);
+  color: white;
+
+  border-radius: 8px;
+
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+
+  transform: translateX(-50%);
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition: 0.15s ease;
+
+  z-index: 10;
+}
+
+.tooltip:hover .tooltip-text {
+  opacity: 1;
+  visibility: visible;
+}
+
 .methodology {
   margin-bottom: 80px !important;
   padding: 36px;
@@ -346,5 +404,9 @@ button:active {
 
   fieldset label {
     justify-content: flex-start;
+  }
+
+  .tooltip-text {
+    width: 220px;
   }
 }
