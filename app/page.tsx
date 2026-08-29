@@ -3,9 +3,8 @@
 import { useState } from "react";
 
 export default function HomePage() {
-  const [ral, setRal] = useState(30000);
-  const [contract, setContract] = useState("indeterminato");
-  const [days, setDays] = useState(365);
+  const [ral, setRal] = useState("");
+  const [monthsWorked, setMonthsWorked] = useState(12);
   const [months, setMonths] = useState(13);
 
   const [result, setResult] = useState<any>(null);
@@ -32,20 +31,17 @@ export default function HomePage() {
 
   function detrazioneLavoroDipendente(
     R: number,
-    G: number,
-    contratto: string
+    G: number
   ) {
     let detIrpef = 0;
 
     if (R <= 15000) {
       detIrpef = (1955 * G) / 365;
 
-      if (contratto === "determinato") {
-        detIrpef = Math.max(detIrpef, 1380);
-      } else if (contratto === "indeterminato") {
-        detIrpef = Math.max(detIrpef, 690);
-      }
-    } else if (R <= 28000) {
+      detIrpef = Math.max(detIrpef, 690);
+    }
+
+    else if (R <= 28000) {
       detIrpef =
         (1910 + (1190 * (28000 - R)) / 13000) *
         (G / 365);
@@ -53,7 +49,9 @@ export default function HomePage() {
       if (R > 25000) {
         detIrpef += 65;
       }
-    } else if (R <= 50000) {
+    }
+
+    else if (R <= 50000) {
       detIrpef =
         ((1910 * (50000 - R)) / 22000) *
         (G / 365);
@@ -103,16 +101,24 @@ export default function HomePage() {
   }
 
   function calculate() {
-    const contributi = contributiInps(ral);
+    const ralNumber = Number(ral);
 
-    const R = ral - contributi;
+    if (!ralNumber || ralNumber <= 0) {
+      setResult(null);
+      return;
+    }
+
+    const G = (monthsWorked * 365) / 12;
+
+    const contributi = contributiInps(ralNumber);
+
+    const R = ralNumber - contributi;
 
     const grossIrpef = irpefLorda(R);
 
     const detrazione = detrazioneLavoroDipendente(
       R,
-      days,
-      contract
+      G
     );
 
     const netIrpef = Math.max(
@@ -132,10 +138,14 @@ export default function HomePage() {
       regionale -
       comunale;
 
+    const mensilitaEffettive =
+      monthsWorked === 12 ? months : monthsWorked;
+
     const nettoMensile =
-      nettoAnnuale / months;
+      nettoAnnuale / mensilitaEffettive;
 
     setResult({
+      ralNumber,
       contributi,
       R,
       grossIrpef,
@@ -145,6 +155,8 @@ export default function HomePage() {
       comunale,
       nettoAnnuale,
       nettoMensile,
+      G,
+      mensilitaEffettive,
     });
   }
 
@@ -184,63 +196,53 @@ export default function HomePage() {
           <input
             id="ral"
             type="number"
+            placeholder="30000"
             value={ral}
-            onChange={(e) =>
-              setRal(Number(e.target.value))
-            }
+            onChange={(e) => setRal(e.target.value)}
           />
 
-          <label htmlFor="contract">
-            Tipo di contratto
+          <label htmlFor="monthsWorked">
+            Mesi lavorati nell’anno
           </label>
 
           <select
-            id="contract"
-            value={contract}
+            id="monthsWorked"
+            value={monthsWorked}
             onChange={(e) =>
-              setContract(e.target.value)
+              setMonthsWorked(Number(e.target.value))
             }
           >
-            <option value="indeterminato">
-              Tempo indeterminato
-            </option>
-
-            <option value="determinato">
-              Tempo determinato
-            </option>
+            {Array.from(
+              { length: 12 },
+              (_, i) => i + 1
+            ).map((m) => (
+              <option key={m} value={m}>
+                {m}
+              </option>
+            ))}
           </select>
 
-          <label htmlFor="days">
-            Giorni lavorati nell’anno
-          </label>
+          {monthsWorked === 12 && (
+            <fieldset>
+              <legend>Numero di mensilità</legend>
 
-          <input
-            id="days"
-            type="number"
-            min="1"
-            max="365"
-            value={days}
-            onChange={(e) =>
-              setDays(Number(e.target.value))
-            }
-          />
+              {[12, 13, 14].map((number) => (
+                <label key={number}>
+                  <input
+                    type="radio"
+                    name="months"
+                    value={number}
+                    checked={months === number}
+                    onChange={() =>
+                      setMonths(number)
+                    }
+                  />
 
-          <fieldset>
-            <legend>Numero di mensilità</legend>
-
-            {[12, 13, 14].map((number) => (
-              <label key={number}>
-                <input
-                  type="radio"
-                  name="months"
-                  value={number}
-                  checked={months === number}
-                  onChange={() => setMonths(number)}
-                />
-                {number}
-              </label>
-            ))}
-          </fieldset>
+                  {number}
+                </label>
+              ))}
+            </fieldset>
+          )}
 
           <button
             type="button"
@@ -261,7 +263,8 @@ export default function HomePage() {
             </h2>
 
             <p>
-              Netto mensile stimato su {months} mensilità
+              Netto mensile stimato su{" "}
+              {result.mensilitaEffettive} mensilità
             </p>
 
             <h3>
@@ -274,42 +277,64 @@ export default function HomePage() {
 
             <p>
               <span>RAL</span>
-              <strong>{euro(ral)}</strong>
+              <strong>
+                {euro(result.ralNumber)}
+              </strong>
             </p>
 
             <p>
               <span>Contributi INPS</span>
-              <strong>- {euro(result.contributi)}</strong>
+              <strong>
+                - {euro(result.contributi)}
+              </strong>
             </p>
 
             <p>
               <span>Imponibile IRPEF</span>
-              <strong>{euro(result.R)}</strong>
+              <strong>
+                {euro(result.R)}
+              </strong>
             </p>
 
             <p>
               <span>IRPEF lorda</span>
-              <strong>{euro(result.grossIrpef)}</strong>
+              <strong>
+                {euro(result.grossIrpef)}
+              </strong>
             </p>
 
             <p>
-              <span>Detrazione lavoro dipendente</span>
-              <strong>+ {euro(result.detrazione)}</strong>
+              <span>
+                Detrazione lavoro dipendente
+              </span>
+              <strong>
+                + {euro(result.detrazione)}
+              </strong>
             </p>
 
             <p>
               <span>IRPEF netta</span>
-              <strong>- {euro(result.netIrpef)}</strong>
+              <strong>
+                - {euro(result.netIrpef)}
+              </strong>
             </p>
 
             <p>
-              <span>Addizionale Emilia-Romagna</span>
-              <strong>- {euro(result.regionale)}</strong>
+              <span>
+                Addizionale regionale
+              </span>
+              <strong>
+                - {euro(result.regionale)}
+              </strong>
             </p>
 
             <p>
-              <span>Addizionale Bologna</span>
-              <strong>- {euro(result.comunale)}</strong>
+              <span>
+                Addizionale provinciale
+              </span>
+              <strong>
+                - {euro(result.comunale)}
+              </strong>
             </p>
           </div>
         </section>
@@ -324,8 +349,15 @@ export default function HomePage() {
         </p>
 
         <p>
-          Il modello assume un dipendente del settore privato residente a
-          Bologna, in Emilia-Romagna, senza particolari agevolazioni fiscali.
+          Il modello assume un dipendente del settore privato con contratto
+          a tempo indeterminato, residente a Bologna, in Emilia-Romagna,
+          senza particolari agevolazioni fiscali.
+        </p>
+
+        <p>
+          I giorni utili ai fini della detrazione da lavoro dipendente
+          vengono stimati a partire dai mesi lavorati secondo la formula:
+          mesi lavorati × 365 / 12.
         </p>
 
         <p>
