@@ -193,12 +193,19 @@ export default function HomePage() {
           </label>
 
           <input
-            id="ral"
-            type="number"
-            placeholder="30000"
-            value={ral}
-            onChange={(e) => setRal(e.target.value)}
-          />
+  id="ral"
+  type="number"
+  placeholder="30000"
+  min="0"
+  step="1"
+  value={ral}
+  onChange={(e) => setRal(e.target.value)}
+  onKeyDown={(e) => {
+    if (["e", "E", "+", "-"].includes(e.key)) {
+      e.preventDefault();
+    }
+  }}
+/>
 
           <label htmlFor="monthsWorked">
             Mesi lavorati nell’anno
