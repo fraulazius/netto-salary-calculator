@@ -169,13 +169,12 @@ export default function HomePage() {
   return (
     <main>
       <header>
-        <strong>NETTO</strong>
-        <span>Prototipo · Bologna</span>
+        <strong>CALCOLATORE STIPENDIO NETTO</strong>
+        <span>Prototipo</span>
       </header>
 
       <section>
         <div>
-          <p>Calcolatore stipendio</p>
 
           <h1>Quanto vale davvero la tua RAL?</h1>
 
