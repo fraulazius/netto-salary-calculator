@@ -170,12 +170,13 @@ export default function HomePage() {
   return (
     <main>
       <header>
-        <strong>CALCOLATORE STIPENDIO NETTO</strong>
-        <span>Prototipo </span>
+        <strong>NETTO</strong>
+        <span>Prototipo · Bologna</span>
       </header>
 
       <section>
         <div>
+          <p>Calcolatore stipendio</p>
 
           <h1>Quanto vale davvero la tua RAL?</h1>
 
@@ -236,7 +237,6 @@ export default function HomePage() {
                       setMonths(number)
                     }
                   />
-
                   {number}
                 </label>
               ))}
@@ -296,23 +296,17 @@ export default function HomePage() {
             </p>
 
             <p>
-              <span>IRPEF lorda</span>
-              <strong>
-                {euro(result.grossIrpef)}
-              </strong>
-            </p>
+              <span className="tooltip-label">
+                IRPEF netta
 
-            <p>
-              <span>
-                Detrazione lavoro dipendente
+                <span className="tooltip">
+                  ?
+                  <span className="tooltip-text">
+                    IRPEF netta = IRPEF lorda − detrazione da lavoro dipendente
+                  </span>
+                </span>
               </span>
-              <strong>
-                + {euro(result.detrazione)}
-              </strong>
-            </p>
 
-            <p>
-              <span>IRPEF netta</span>
               <strong>
                 - {euro(result.netIrpef)}
               </strong>
@@ -320,7 +314,7 @@ export default function HomePage() {
 
             <p>
               <span>
-                Addizionale regionale
+                Addizionale Emilia-Romagna
               </span>
               <strong>
                 - {euro(result.regionale)}
@@ -329,7 +323,7 @@ export default function HomePage() {
 
             <p>
               <span>
-                Addizionale provinciale
+                Addizionale Bologna
               </span>
               <strong>
                 - {euro(result.comunale)}
