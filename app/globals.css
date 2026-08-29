@@ -33,6 +33,19 @@ main {
   min-height: 100vh;
 }
 
+/* Nasconde le frecce dell'input number in Chrome, Edge e Safari */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Nasconde le frecce in Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 /* HEADER */
 
 header {
