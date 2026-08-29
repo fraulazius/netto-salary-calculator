@@ -37,7 +37,6 @@ export default function HomePage() {
 
     if (R <= 15000) {
       detIrpef = (1955 * G) / 365;
-
       detIrpef = Math.max(detIrpef, 690);
     }
 
@@ -288,22 +287,16 @@ export default function HomePage() {
               </strong>
             </p>
 
-            <p>
-              <span>Imponibile IRPEF</span>
-              <strong>
-                {euro(result.R)}
-              </strong>
-            </p>
+            <p className="breakdown-item">
+              <span>
+                <span className="breakdown-title">
+                  IRPEF netta
+                </span>
 
-            <p>
-              <span className="tooltip-label">
-                IRPEF netta
-
-                <span className="tooltip">
-                  ?
-                  <span className="tooltip-text">
-                    IRPEF netta = IRPEF lorda − detrazione da lavoro dipendente
-                  </span>
+                <span className="breakdown-detail">
+                  IRPEF lorda {euro(result.grossIrpef)}
+                  {" − "}
+                  detrazione {euro(result.detrazione)}
                 </span>
               </span>
 
@@ -314,8 +307,9 @@ export default function HomePage() {
 
             <p>
               <span>
-                Addizionale Emilia-Romagna
+                Addizionale regionale Emilia-Romagna
               </span>
+
               <strong>
                 - {euro(result.regionale)}
               </strong>
@@ -323,8 +317,9 @@ export default function HomePage() {
 
             <p>
               <span>
-                Addizionale Bologna
+                Addizionale comunale Bologna
               </span>
+
               <strong>
                 - {euro(result.comunale)}
               </strong>
