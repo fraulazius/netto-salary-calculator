@@ -351,8 +351,7 @@ export default function HomePage() {
 
         <p>
           I giorni utili ai fini della detrazione da lavoro dipendente
-          vengono stimati a partire dai mesi lavorati secondo la formula:
-          mesi lavorati × 365 / 12.
+          vengono stimati a partire dal numero di mesi di lavoro nell'anno.
         </p>
 
         <p>
