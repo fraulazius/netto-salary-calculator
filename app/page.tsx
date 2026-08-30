@@ -208,7 +208,7 @@ export default function HomePage() {
           />
 
           <label htmlFor="monthsWorked">
-            Mesi lavorati nell’anno
+            Mesi di lavoro nell’anno
           </label>
 
           <select
