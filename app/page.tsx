@@ -169,12 +169,13 @@ export default function HomePage() {
   return (
     <main>
       <header>
-        <strong>CALCOLATORE STIPENDIO NETTO</strong>
+        <strong>NETTO</strong>
         <span>Prototipo</span>
       </header>
 
       <section>
         <div>
+          <p>Calcolatore stipendio</p>
 
           <h1>Quanto vale davvero la tua RAL?</h1>
 
@@ -192,19 +193,19 @@ export default function HomePage() {
           </label>
 
           <input
-  id="ral"
-  type="number"
-  placeholder="30000"
-  min="0"
-  step="1"
-  value={ral}
-  onChange={(e) => setRal(e.target.value)}
-  onKeyDown={(e) => {
-    if (["e", "E", "+", "-"].includes(e.key)) {
-      e.preventDefault();
-    }
-  }}
-/>
+            id="ral"
+            type="number"
+            placeholder="30000"
+            min="0"
+            step="1"
+            value={ral}
+            onChange={(e) => setRal(e.target.value)}
+            onKeyDown={(e) => {
+              if (["e", "E", "+", "-"].includes(e.key)) {
+                e.preventDefault();
+              }
+            }}
+          />
 
           <label htmlFor="monthsWorked">
             Mesi lavorati nell’anno
@@ -313,7 +314,7 @@ export default function HomePage() {
 
             <p>
               <span>
-                Addizionale regionale Emilia-Romagna
+                Addizionale regionale
               </span>
 
               <strong>
@@ -323,7 +324,7 @@ export default function HomePage() {
 
             <p>
               <span>
-                Addizionale comunale Bologna
+                Addizionale comunale
               </span>
 
               <strong>
