@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NETTO
 
-## Getting Started
+NETTO è un prototipo web per stimare lo stipendio netto a partire dalla Retribuzione Annua Lorda (RAL).
 
-First, run the development server:
+L'obiettivo è fornire una stima semplice e leggibile del netto e delle principali trattenute fiscali e contributive.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Funzionalità
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+L'utente può inserire:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Retribuzione Annua Lorda (RAL)
+- mesi lavorati nell'anno
+- numero di mensilità, nel caso di un anno completo
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Il calcolatore restituisce:
 
-## Learn More
+- netto annuale stimato
+- netto medio per mensilità
+- contributi INPS
+- IRPEF netta
+- addizionale regionale Emilia-Romagna
+- addizionale comunale di Bologna
 
-To learn more about Next.js, take a look at the following resources:
+## Assunzioni
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Il prototipo considera un caso standard:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- dipendente del settore privato
+- contratto a tempo indeterminato
+- residenza a Bologna, Emilia-Romagna
+- nessuna agevolazione fiscale particolare
+- contributi previdenziali stimati con aliquota semplificata del 9,19%
 
-## Deploy on Vercel
+Il risultato è una stima indicativa.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Il calcolo reale può variare in base a CCNL, benefit, bonus, situazione personale e familiare, ulteriori redditi, massimali contributivi e altre variabili fiscali.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Struttura principale
+
+- `app/page.tsx` — logica del calcolatore e interfaccia principale
+- `app/globals.css` — stile dell'applicazione
+- `app/layout.tsx` — layout generale dell'app
+
+Gli altri file presenti nella repository sono principalmente file di configurazione e dipendenze standard di Next.js.
+
+## Tecnologie
+
+- Next.js
+- React
+- TypeScript
+- CSS
+
+## Demo
+
+https://netto-salary-calculator.vercel.app
